@@ -1,0 +1,11 @@
+[package]
+name = "wasmboy"
+version = "0.0.1"
+authors = ["Richard Anaya"]
+edition = "2018"
+description = "a simple game library for web assembly"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
