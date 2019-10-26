@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+		<style>
+			html,body {
+				background: black;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="screen" width="160" height="144"></canvas>
+	</body>
+</html>
+<script>
+let mod = null;
+var screen = document.querySelector("#screen");
+let ctx = screen.getContext("2d");
+var urlParams = new URLSearchParams(window.location.search);
+let wasm = urlParams.get("wasm");
+fetch(wasm).then(response => 
+response.arrayBuffer()
+).then(bytes => 
+WebAssembly.instantiate(bytes,{
+	env: { 
+		frame_buffer_write: function(start){
+			let mem = mod.exports.memory.buffer;
+			const data = new Uint8Array(mem);
+			var id = ctx.createImageData(160,144);
+			var d  = id.data;                        // only do this once per page
+			for(var i = 0; i<160*140*4; i++){
+				d[i] = data[start+i]
+			}
+			ctx.putImageData( id, 0, 0 );
+		} ,
+		random_number: function(){
+			return Math.random();
+		} 
+}})
+).then(obj => {
+	mod = obj.instance;
+	window.setInterval(function(){
+		obj.instance.exports.run()
+	},1000/59.7);
+	document.addEventListener("keydown",function(e){
+		obj.instance.exports.key_down(e.keyCode)
+	})
+	document.addEventListener("keyup",function(e){
+		obj.instance.exports.key_up(e.keyCode)
+	})
+});
+</script>

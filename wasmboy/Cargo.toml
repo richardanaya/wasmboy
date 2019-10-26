@@ -1,6 +1,6 @@
 [package]
 name = "wasmboy"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Richard Anaya"]
 edition = "2018"
 description = "a simple game library for web assembly"
