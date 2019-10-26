@@ -1,0 +1,9 @@
+[package]
+name = "richard/hellogame"
+version = "0.0.1"
+description = "a simple test game for wasmboy"
+repository = "https://github.com/richardanaya/wasmboy"
+
+[[module]]
+name = "hellogame"
+source = "hellogame.wasm"
